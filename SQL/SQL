@@ -1,0 +1,279 @@
+USE [master]
+GO
+/****** Object:  Database [StudentProgressDB]    Script Date: 23.06.2026 17:13:07 ******/
+CREATE DATABASE [StudentProgressDB]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'StudentProgressDB', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\StudentProgressDB.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'StudentProgressDB_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\StudentProgressDB_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [StudentProgressDB] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [StudentProgressDB].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [StudentProgressDB] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [StudentProgressDB] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [StudentProgressDB] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [StudentProgressDB] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [StudentProgressDB] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [StudentProgressDB] SET  MULTI_USER 
+GO
+ALTER DATABASE [StudentProgressDB] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [StudentProgressDB] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [StudentProgressDB] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [StudentProgressDB] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [StudentProgressDB] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [StudentProgressDB] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [StudentProgressDB] SET QUERY_STORE = OFF
+GO
+USE [StudentProgressDB]
+GO
+/****** Object:  Table [dbo].[Grades]    Script Date: 23.06.2026 17:13:07 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Grades](
+	[GradeID] [int] IDENTITY(1,1) NOT NULL,
+	[StudentID] [int] NULL,
+	[SubjectID] [int] NULL,
+	[TeacherID] [int] NULL,
+	[GradeValue] [int] NULL,
+	[DateOfExam] [date] NOT NULL,
+	[ControlType] [nvarchar](20) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[GradeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Groups]    Script Date: 23.06.2026 17:13:07 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Groups](
+	[GroupID] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[YearOfEnrollment] [int] NOT NULL,
+	[Specialty] [nvarchar](100) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[GroupID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Students]    Script Date: 23.06.2026 17:13:07 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Students](
+	[StudentID] [int] IDENTITY(1,1) NOT NULL,
+	[FullName] [nvarchar](100) NOT NULL,
+	[BirthDate] [date] NULL,
+	[Phone] [nvarchar](20) NULL,
+	[Email] [nvarchar](100) NULL,
+	[GroupID] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[StudentID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Subjects]    Script Date: 23.06.2026 17:13:07 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Subjects](
+	[SubjectID] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+	[Hours] [int] NULL,
+	[Semester] [int] NULL,
+	[TeacherID] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[SubjectID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Teachers]    Script Date: 23.06.2026 17:13:07 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Teachers](
+	[TeacherID] [int] IDENTITY(1,1) NOT NULL,
+	[FullName] [nvarchar](100) NOT NULL,
+	[Department] [nvarchar](100) NULL,
+	[AcademicDegree] [nvarchar](50) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[TeacherID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Users]    Script Date: 23.06.2026 17:13:07 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Users](
+	[UserID] [int] IDENTITY(1,1) NOT NULL,
+	[Login] [nvarchar](50) NOT NULL,
+	[Password] [nvarchar](256) NOT NULL,
+	[Role] [nvarchar](20) NOT NULL,
+	[StudentID] [int] NULL,
+	[TeacherID] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[UserID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[Grades] ON 
+
+INSERT [dbo].[Grades] ([GradeID], [StudentID], [SubjectID], [TeacherID], [GradeValue], [DateOfExam], [ControlType]) VALUES (1, 1, 3, 3, 2, CAST(N'2026-06-22' AS Date), N'Экзамен')
+INSERT [dbo].[Grades] ([GradeID], [StudentID], [SubjectID], [TeacherID], [GradeValue], [DateOfExam], [ControlType]) VALUES (2, 2, 3, 3, 4, CAST(N'2026-06-22' AS Date), N'Экзамен')
+SET IDENTITY_INSERT [dbo].[Grades] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Groups] ON 
+
+INSERT [dbo].[Groups] ([GroupID], [Name], [YearOfEnrollment], [Specialty]) VALUES (1, N'ПИ-201', 2022, N'Программная инженерия')
+INSERT [dbo].[Groups] ([GroupID], [Name], [YearOfEnrollment], [Specialty]) VALUES (2, N'ПИ-202', 2022, N'Программная инженерия')
+INSERT [dbo].[Groups] ([GroupID], [Name], [YearOfEnrollment], [Specialty]) VALUES (3, N'ИС-211', 2022, N'Информационные системы')
+SET IDENTITY_INSERT [dbo].[Groups] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Students] ON 
+
+INSERT [dbo].[Students] ([StudentID], [FullName], [BirthDate], [Phone], [Email], [GroupID]) VALUES (1, N'Иванов Иван Иванович', CAST(N'2004-05-15' AS Date), N'+7-999-123-45-67', N'ivanov@mail.ru', 1)
+INSERT [dbo].[Students] ([StudentID], [FullName], [BirthDate], [Phone], [Email], [GroupID]) VALUES (2, N'Петрова Анна Сергеевна', CAST(N'2004-08-20' AS Date), N'+7-999-234-56-78', N'petrova@mail.ru', 1)
+INSERT [dbo].[Students] ([StudentID], [FullName], [BirthDate], [Phone], [Email], [GroupID]) VALUES (3, N'Сидоров Алексей Петрович', CAST(N'2003-11-10' AS Date), N'+7-999-345-67-89', N'sidorov@mail.ru', 2)
+SET IDENTITY_INSERT [dbo].[Students] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Subjects] ON 
+
+INSERT [dbo].[Subjects] ([SubjectID], [Name], [Hours], [Semester], [TeacherID]) VALUES (1, N'Математический анализ', 120, 1, 1)
+INSERT [dbo].[Subjects] ([SubjectID], [Name], [Hours], [Semester], [TeacherID]) VALUES (2, N'Программирование на C#', 100, 1, 2)
+INSERT [dbo].[Subjects] ([SubjectID], [Name], [Hours], [Semester], [TeacherID]) VALUES (3, N'Базы данных', 80, 2, 3)
+SET IDENTITY_INSERT [dbo].[Subjects] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Teachers] ON 
+
+INSERT [dbo].[Teachers] ([TeacherID], [FullName], [Department], [AcademicDegree]) VALUES (1, N'Смирнова Ольга Владимировна', N'Кафедра математики', N'к.ф.-м.н.')
+INSERT [dbo].[Teachers] ([TeacherID], [FullName], [Department], [AcademicDegree]) VALUES (2, N'Кузнецов Дмитрий Алексеевич', N'Кафедра программирования', N'д.т.н.')
+INSERT [dbo].[Teachers] ([TeacherID], [FullName], [Department], [AcademicDegree]) VALUES (3, N'Васильева Елена Михайловна', N'Кафедра информатики', N'к.п.н.')
+SET IDENTITY_INSERT [dbo].[Teachers] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Users] ON 
+
+INSERT [dbo].[Users] ([UserID], [Login], [Password], [Role], [StudentID], [TeacherID]) VALUES (1, N'admin', N'admin123', N'Администратор', NULL, NULL)
+INSERT [dbo].[Users] ([UserID], [Login], [Password], [Role], [StudentID], [TeacherID]) VALUES (4, N'ivanov', N'12345', N'Студент', 1, NULL)
+INSERT [dbo].[Users] ([UserID], [Login], [Password], [Role], [StudentID], [TeacherID]) VALUES (5, N'petrova', N'12345', N'Студент', 2, NULL)
+INSERT [dbo].[Users] ([UserID], [Login], [Password], [Role], [StudentID], [TeacherID]) VALUES (6, N'sidorov', N'12345', N'Студент', 3, NULL)
+INSERT [dbo].[Users] ([UserID], [Login], [Password], [Role], [StudentID], [TeacherID]) VALUES (7, N'smirnova', N'12345', N'Преподаватель', NULL, 1)
+INSERT [dbo].[Users] ([UserID], [Login], [Password], [Role], [StudentID], [TeacherID]) VALUES (8, N'kuznetsov', N'12345', N'Преподаватель', NULL, 2)
+INSERT [dbo].[Users] ([UserID], [Login], [Password], [Role], [StudentID], [TeacherID]) VALUES (9, N'vasilyeva', N'12345', N'Преподаватель', NULL, 3)
+SET IDENTITY_INSERT [dbo].[Users] OFF
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Users__5E55825B91BBD9B1]    Script Date: 23.06.2026 17:13:07 ******/
+ALTER TABLE [dbo].[Users] ADD UNIQUE NONCLUSTERED 
+(
+	[Login] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Grades] ADD  DEFAULT (getdate()) FOR [DateOfExam]
+GO
+ALTER TABLE [dbo].[Grades]  WITH CHECK ADD FOREIGN KEY([StudentID])
+REFERENCES [dbo].[Students] ([StudentID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Grades]  WITH CHECK ADD FOREIGN KEY([SubjectID])
+REFERENCES [dbo].[Subjects] ([SubjectID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Grades]  WITH CHECK ADD FOREIGN KEY([TeacherID])
+REFERENCES [dbo].[Teachers] ([TeacherID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Students]  WITH CHECK ADD FOREIGN KEY([GroupID])
+REFERENCES [dbo].[Groups] ([GroupID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Subjects]  WITH CHECK ADD FOREIGN KEY([TeacherID])
+REFERENCES [dbo].[Teachers] ([TeacherID])
+ON DELETE SET NULL
+GO
+ALTER TABLE [dbo].[Users]  WITH CHECK ADD FOREIGN KEY([StudentID])
+REFERENCES [dbo].[Students] ([StudentID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Users]  WITH CHECK ADD FOREIGN KEY([TeacherID])
+REFERENCES [dbo].[Teachers] ([TeacherID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Grades]  WITH CHECK ADD CHECK  (([ControlType]='Зачет' OR [ControlType]='Экзамен'))
+GO
+ALTER TABLE [dbo].[Grades]  WITH CHECK ADD CHECK  (([GradeValue]>=(2) AND [GradeValue]<=(5)))
+GO
+ALTER TABLE [dbo].[Users]  WITH CHECK ADD CHECK  (([Role]='Студент' OR [Role]='Преподаватель' OR [Role]='Администратор'))
+GO
+USE [master]
+GO
+ALTER DATABASE [StudentProgressDB] SET  READ_WRITE 
+GO
